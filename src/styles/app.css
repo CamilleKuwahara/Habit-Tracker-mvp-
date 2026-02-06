@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Your original theme + styles */
+:root{
+  --bg:#0b0f19;
+  --panel:#121a2a;
+  --panel2:#0f1626;
+  --text:#e9eefc;
+  --muted:#aab6d8;
+  --line:#2a3653;
+  --accent:#7aa2ff;
+  --good:#35d39d;
+  --danger:#ff6b6b;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --radius:16px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  background: radial-gradient(1000px 600px at 20% 0%, rgba(122,162,255,.18), transparent 60%),
+              radial-gradient(900px 600px at 90% 20%, rgba(53,211,157,.12), transparent 65%),
+              var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+header{
+  padding:22px 18px;
+  max-width:1100px;
+  margin:0 auto;
+  display:flex;
+  gap:14px;
+  align-items:flex-end;
+  justify-content:space-between;
+}
+header h1{
+  margin:0;
+  font-size:20px;
+  letter-spacing:.2px;
+}
+header .sub{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.35;
+}
+.wrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 18px 28px;
+  display:grid;
+  grid-template-columns: 360px 1fr;
+  gap:16px;
+}
+@media (max-width: 920px){
+  .wrap{grid-template-columns:1fr}
+}
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.card .hd{
+  padding:14px 14px 12px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.12);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.card .hd h2{
+  margin:0;
+  font-size:14px;
+  color:var(--text);
+  letter-spacing:.2px;
+}
+.card .bd{ padding:14px; }
+.row{display:flex; gap:10px; align-items:center;}
+input[type="text"]{
+  width:100%;
+  padding:10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(10,14,24,.65);
+  color:var(--text);
+  outline:none;
+}
+input[type="text"]::placeholder{color:rgba(170,182,216,.65)}
+input[type="date"]{
+  padding:10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(10,14,24,.65);
+  color:var(--text);
+  outline:none;
+}
+button{
+  padding:10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(122,162,255,.16);
+  color:var(--text);
+  cursor:pointer;
+  transition:.15s transform, .15s opacity;
+  white-space:nowrap;
+}
+button:hover{opacity:.92}
+button:active{transform: translateY(1px)}
+.btn-ghost{ background: rgba(255,255,255,.06); }
+.btn-danger{
+  background: rgba(255,107,107,.14);
+  border-color: rgba(255,107,107,.25);
+}
+.habits{ display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+.habit-item{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 10px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(10,14,24,.55);
+}
+.habit-left{ display:flex; gap:10px; align-items:center; min-width:0; }
+.chk{
+  width:18px; height:18px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(0,0,0,.15);
+  display:grid; place-items:center; flex:0 0 auto;
+}
+.chk.on{ background: rgba(53,211,157,.18); border-color: rgba(53,211,157,.5); }
+.chk svg{opacity:.0}
+.chk.on svg{opacity:1}
+.habit-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+.habit-actions{ display:flex; gap:8px; flex:0 0 auto; }
+.icon-btn{ width:34px; height:34px; border-radius: 12px; display:grid; place-items:center; padding:0; }
+.muted{ color:var(--muted); font-size:12px; line-height:1.35; }
+.stats{ display:flex; gap:10px; align-items:stretch; flex-wrap:wrap; margin-top:10px; }
+.pill{
+  padding:10px 12px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(10,14,24,.55);
+  min-width: 170px; flex:1 1 auto;
+}
+.pill .k{ color:var(--muted); font-size:11px; }
+.pill .v{ font-size:18px; margin-top:4px; }
+.pill .v small{ font-size:12px; color:var(--muted); }
+.graph-wrap{ padding:10px 0 0; }
+canvas{
+  width:100%; height:260px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(10,14,24,.45);
+  display:block;
+}
+.footer-actions{ display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; margin-top:12px; }
+.hint{
+  margin-top:10px; padding:10px 12px; border-radius: 14px;
+  background: rgba(122,162,255,.08);
+  border: 1px solid rgba(122,162,255,.20);
+  color: rgba(233,238,252,.92);
+  font-size:12px; line-height:1.45;
+}
+a{ color:var(--accent); }
+
+/* ---- Feed (Strava-like centered cards) ---- */
+#feedList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.feed-card {
+  padding: 14px 6px;
+}
+
+.feed-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0 6px;
+}
+
+.feed-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.feed-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.feed-name {
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+
+.feed-date {
+  font-size: 12px;
+}
+
+.feed-stats {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.feed-pill {
+  display: inline-flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feed-pill b {
+  font-weight: 650;
+}
+
+.feed-details {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
