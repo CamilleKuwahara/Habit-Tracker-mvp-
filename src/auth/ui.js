@@ -87,7 +87,7 @@ export function injectAuthUI() {
 
   document.body.appendChild(overlay);
 
-  // ✅ close helpers
+  // close helpers
   const close = () => hideAuth();
   document.getElementById("authBackdrop")?.addEventListener("click", close);
   document.getElementById("goHomeBtn")?.addEventListener("click", close);
