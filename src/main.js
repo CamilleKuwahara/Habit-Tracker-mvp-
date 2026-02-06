@@ -1,6 +1,6 @@
 import "./styles/app.css";
 import { mountHabitApp } from "./app/index.js";
-import { injectAuthUI } from "./auth/ui.js";
+import { injectAuthUI, showAuth, hideAuth } from "./auth/ui.js";
 import { checkSession, wireAuth } from "./auth/session.js";
 
 const root = document.getElementById("app");
@@ -99,17 +99,24 @@ root.innerHTML = `
 
 // 2) Auth overlay
 injectAuthUI();
-document.getElementById("accountBtn").addEventListener("click", () => {
-  document.getElementById("authOverlay")?.classList.remove("hidden");
-});
 
-// 3) Hide app until logged in
 const appWrap = document.getElementById("appWrap");
 appWrap.style.display = "none";
 
 // Track current mounted user + cleanup
 let currentUserId = null;
 let cleanupHabitApp = null;
+
+function openAuthOverlay() {
+  // Logged in: show "Go back home" + Logout
+  // Logged out: show login/signup form
+  const loggedIn = !!currentUserId;
+  window.__authUI?.setHomeMode?.(loggedIn);
+  window.__authUI?.setLogoutVisible?.(loggedIn);
+  showAuth();
+}
+
+document.getElementById("accountBtn").addEventListener("click", openAuthOverlay);
 
 function mountForUser(user) {
   const userId = user.$id;
@@ -128,6 +135,10 @@ function mountForUser(user) {
 
   cleanupHabitApp = mountHabitApp(userId);
 
+  // Ensure overlay is in "logged-in" mode if opened
+  window.__authUI?.setHomeMode?.(true);
+  window.__authUI?.setLogoutVisible?.(true);
+
   console.log("✅ Habit app mounted for:", userId);
 }
 
@@ -142,6 +153,9 @@ wireAuth(
   (user) => {
     console.log("✅ Logged in via UI");
     mountForUser(user);
+
+    // close overlay after successful login/signup
+    hideAuth();
   },
   () => {
     console.log("✅ Logged out");
@@ -154,5 +168,12 @@ wireAuth(
 
     const badge = document.getElementById("userBadge");
     if (badge) badge.textContent = "Not logged in";
+
+    // Reset overlay mode
+    window.__authUI?.setHomeMode?.(false);
+    window.__authUI?.setLogoutVisible?.(false);
+
+    // close overlay after logout
+    hideAuth();
   }
 );

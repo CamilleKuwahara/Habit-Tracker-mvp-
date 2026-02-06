@@ -1,5 +1,5 @@
 import "../styles/app.css";
-import { injectAuthUI } from "../auth/ui.js";
+import { injectAuthUI, showAuth, hideAuth } from "../auth/ui.js";
 import { checkSession, wireAuth } from "../auth/session.js";
 import { mountFeedUI } from "./feedUI.js";
 
@@ -42,18 +42,33 @@ root.innerHTML = `
 
 // Auth overlay
 injectAuthUI();
-document.getElementById("accountBtn").addEventListener("click", () => {
-  document.getElementById("authOverlay")?.classList.remove("hidden");
-});
 
 const feedWrap = document.getElementById("feedWrap");
 feedWrap.style.display = "none";
 
 let cleanupFeedUI = null;
+let isLoggedIn = false;
+
+function openAccountOverlay() {
+  // Logged in => show Go back home + Logout
+  // Logged out => show login/signup
+  window.__authUI?.setHomeMode?.(isLoggedIn);
+  window.__authUI?.setLogoutVisible?.(isLoggedIn);
+
+  showAuth();
+}
+
+document.getElementById("accountBtn")?.addEventListener("click", openAccountOverlay);
 
 function onLoggedIn(user) {
+  isLoggedIn = true;
+
   const badge = document.getElementById("userBadge");
   if (badge) badge.textContent = `Logged in: ${user.name || user.email}`;
+
+  // Ensure overlay shows correct (logged-in) mode if opened
+  window.__authUI?.setHomeMode?.(true);
+  window.__authUI?.setLogoutVisible?.(true);
 
   feedWrap.style.display = "";
   cleanupFeedUI?.();
@@ -61,13 +76,30 @@ function onLoggedIn(user) {
 }
 
 function onLoggedOut() {
+  isLoggedIn = false;
+
   cleanupFeedUI?.();
   cleanupFeedUI = null;
   feedWrap.style.display = "none";
 
   const badge = document.getElementById("userBadge");
   if (badge) badge.textContent = "Not logged in";
+
+  // Ensure overlay shows correct (logged-out) mode if opened
+  window.__authUI?.setHomeMode?.(false);
+  window.__authUI?.setLogoutVisible?.(false);
+
+  hideAuth();
 }
 
 checkSession(onLoggedIn);
-wireAuth(onLoggedIn, onLoggedOut);
+wireAuth(
+  (user) => {
+    onLoggedIn(user);
+    hideAuth(); // close overlay after login/signup
+  },
+  () => {
+    onLoggedOut();
+    // hideAuth already called inside onLoggedOut
+  }
+);
