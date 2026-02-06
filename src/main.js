@@ -14,7 +14,7 @@ root.innerHTML = `
     </div>
 
     <div class="flex items-center gap-2">
-      <a href="/feed" class="btn-ghost">News Feed</a>
+      <a href="/feed.html" class="btn-ghost">News Feed</a>
       <div id="userBadge" class="muted">Not logged in</div>
       <button id="accountBtn" class="btn-ghost">Account</button>
     </div>
